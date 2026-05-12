@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Busker Family Vacation · Colorado Springs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pine: #1a3a2a;
+    --sky: #4a7fa5;
+    --stone: #c8b89a;
+    --snow: #f5f2ed;
+    --rust: #b5522e;
+    --gold: #d4a843;
+    --dark: #111a14;
+    --text: #2c2c2c;
+    --muted: #7a7a6e;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--snow);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    background: var(--pine);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 110%, #4a7fa540 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 20% -10%, #d4a84320 0%, transparent 60%),
+      linear-gradient(160deg, #0d2218 0%, #1a3a2a 50%, #0e2620 100%);
+  }
+
+  /* mountain silhouette */
+  .mountains {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 55%;
+  }
+
+  .mountains svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2rem;
+    animation: fadeUp 1s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.25rem;
+    animation: fadeUp .8s .2s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    font-weight: 900;
+    color: var(--snow);
+    line-height: .95;
+    margin-bottom: 1rem;
+    animation: fadeUp .8s .35s ease both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--stone);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: #a8c4b0;
+    font-weight: 300;
+    letter-spacing: .05em;
+    animation: fadeUp .8s .5s ease both;
+  }
+
+  .hero-dates {
+    margin-top: 2rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 999px;
+    padding: .6rem 1.5rem;
+    color: var(--snow);
+    font-size: .9rem;
+    letter-spacing: .05em;
+    animation: fadeUp .8s .65s ease both;
+  }
+
+  .hero-dates span { color: var(--gold); font-weight: 500; }
+
+  /* ── NAV DOTS ── */
+  .scroll-cue {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+    color: rgba(255,255,255,.4);
+    font-size: .7rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    animation: fadeUp .8s .9s ease both;
+  }
+
+  .scroll-cue::after {
+    content: '';
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,.3), transparent);
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+
+  @keyframes pulse { 50% { opacity: .3; } }
+
+  /* ── SECTION BASE ── */
+  section { padding: 5rem 1.5rem; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .section-label {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .7rem;
+    font-weight: 500;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: .75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--pine);
+    margin-bottom: 2.5rem;
+    line-height: 1.15;
+  }
+
+  /* ── ARRIVALS ── */
+  #arrivals { background: var(--pine); color: var(--snow); }
+
+  #arrivals .section-title { color: var(--snow); }
+  #arrivals .section-label { color: var(--gold); }
+
+  .arrivals-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1rem;
+  }
+
+  .arrival-card {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    padding: 1.4rem 1.5rem;
+    transition: background .2s;
+  }
+
+  .arrival-card:hover { background: rgba(255,255,255,.1); }
+
+  .arrival-names {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--snow);
+    margin-bottom: .4rem;
+  }
+
+  .arrival-time {
+    font-size: .85rem;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: .05em;
+    margin-bottom: .2rem;
+  }
+
+  .arrival-note {
+    font-size: .78rem;
+    color: rgba(255,255,255,.4);
+  }
+
+  /* ── HOUSE ── */
+  #house { background: #f0ece5; }
+
+  .house-card {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    box-shadow: 0 4px 30px rgba(0,0,0,.07);
+    max-width: 500px;
+  }
+
+  .house-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .house-address {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--pine);
+    line-height: 1.3;
+  }
+
+  .house-city {
+    font-size: .9rem;
+    color: var(--muted);
+    margin-top: .3rem;
+  }
+
+  /* ── ACTIVITIES ── */
+  #activities { background: var(--snow); }
+
+  .activities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .activity-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(0,0,0,.06);
+    transition: transform .2s, box-shadow .2s;
+    border-top: 4px solid var(--stone);
+  }
+
+  .activity-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,.12);
+  }
+
+  .activity-card.featured { border-top-color: var(--pine); }
+  .activity-card.adventure { border-top-color: var(--rust); }
+  .activity-card.nature { border-top-color: #5a9e6a; }
+  .activity-card.culture { border-top-color: var(--gold); }
+  .activity-card.water { border-top-color: var(--sky); }
+
+  .activity-body { padding: 1.4rem 1.5rem; }
+
+  .activity-tag {
+    display: inline-block;
+    font-size: .65rem;
+    font-weight: 500;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .2rem .6rem;
+    border-radius: 999px;
+    margin-bottom: .75rem;
+    background: var(--snow);
+    color: var(--muted);
+  }
+
+  .activity-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--pine);
+    margin-bottom: .5rem;
+    line-height: 1.2;
+  }
+
+  .activity-desc {
+    font-size: .88rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .activity-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-bottom: 1rem;
+  }
+
+  .meta-pill {
+    background: var(--snow);
+    border-radius: 999px;
+    padding: .25rem .7rem;
+    font-size: .75rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .meta-pill.price { color: var(--rust); font-weight: 500; }
+  .meta-pill.hours { color: var(--pine); }
+
+  .activity-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    font-size: .8rem;
+    font-weight: 500;
+    color: var(--sky);
+    text-decoration: none;
+    letter-spacing: .03em;
+    transition: color .2s;
+  }
+
+  .activity-link:hover { color: var(--pine); }
+  .activity-link::after { content: '→'; }
+
+
+
+  /* ── ACTIVITY LIKES ── */
+  .activity-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee8de;
+  }
+
+  .like-button {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    border: 1px solid #e0d7c9;
+    background: var(--snow);
+    color: var(--pine);
+    border-radius: 999px;
+    padding: .45rem .85rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform .15s, background .2s, border-color .2s;
+  }
+
+  .like-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #fff8ec;
+    border-color: var(--gold);
+  }
+
+  .like-button.liked {
+    background: #fff4d7;
+    border-color: var(--gold);
+    color: var(--rust);
+  }
+
+  .like-button:disabled {
+    cursor: default;
+    opacity: .75;
+  }
+
+  .like-count {
+    font-size: .78rem;
+    color: var(--muted);
+  }
+
+  .like-count strong {
+    color: var(--pine);
+    font-weight: 700;
+  }
+
+  /* ── TIPS ── */
+  #tips { background: #f0ece5; }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .tip-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,.05);
+  }
+
+  .tip-icon { font-size: 1.8rem; margin-bottom: .75rem; }
+
+  .tip-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--pine);
+    margin-bottom: .4rem;
+  }
+
+  .tip-text {
+    font-size: .85rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,.35);
+    text-align: center;
+    padding: 2rem;
+    font-size: .8rem;
+    letter-spacing: .05em;
+  }
+
+  footer strong { color: rgba(255,255,255,.65); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .house-card { flex-direction: column; gap: 1rem; }
+    section { padding: 3.5rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════ HERO ══════════ -->
+<div class="hero">
+  <div class="hero-bg"></div>
+
+  <div class="mountains">
+    <svg viewBox="0 0 1440 500" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- back range -->
+      <polygon points="0,500 0,300 120,180 240,260 360,140 480,220 600,80 720,180 840,120 960,200 1080,100 1200,190 1320,130 1440,210 1440,500" fill="rgba(255,255,255,0.04)"/>
+      <!-- mid range -->
+      <polygon points="0,500 0,360 180,240 320,310 500,200 660,280 820,170 1000,260 1160,190 1340,270 1440,230 1440,500" fill="rgba(255,255,255,0.06)"/>
+      <!-- front range -->
+      <polygon points="0,500 0,420 200,320 380,390 560,300 740,370 900,290 1080,360 1260,300 1440,350 1440,500" fill="rgba(26,58,42,0.95)"/>
+      <!-- snow caps -->
+      <polygon points="820,170 840,185 860,178 880,165 900,155 920,168 940,175 880,145" fill="rgba(245,242,237,0.25)"/>
+      <polygon points="1080,100 1100,118 1120,108 1140,98 1160,88 1180,104 1140,82" fill="rgba(245,242,237,0.2)"/>
+      <polygon points="360,140 380,158 400,148 420,136 440,128 460,142 430,120" fill="rgba(245,242,237,0.18)"/>
+      <!-- pine trees silhouette -->
+      <g fill="rgba(10,28,18,0.8)">
+        <polygon points="30,500 45,460 60,500"/>
+        <polygon points="50,500 63,452 76,500"/>
+        <polygon points="100,500 115,455 130,500"/>
+        <polygon points="160,500 175,448 190,500"/>
+        <polygon points="200,500 213,458 226,500"/>
+        <polygon points="1250,500 1265,455 1280,500"/>
+        <polygon points="1300,500 1315,450 1330,500"/>
+        <polygon points="1370,500 1385,458 1400,500"/>
+        <polygon points="1410,500 1423,455 1436,500"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">✦ Family Vacation ✦</p>
+    <h1 class="hero-title">Busker<br><em>Colorado</em></h1>
+    <p class="hero-sub">Colorado Springs &nbsp;·&nbsp; Monument</p>
+    <div class="hero-dates">June <span>3 – 7</span>, 2025</div>
+  </div>
+
+  <div class="scroll-cue">Scroll</div>
+</div>
+
+
+<!-- ══════════ ARRIVALS ══════════ -->
+<section id="arrivals">
+  <div class="container">
+    <p class="section-label">✈ Getting There</p>
+    <h2 class="section-title">Flight Arrivals</h2>
+    <div class="arrivals-grid">
+
+      <div class="arrival-card">
+        <div class="arrival-names">Mark &amp; Annie</div>
+        <div class="arrival-time">Arrive 10:00 AM</div>
+        <div class="arrival-note">First to arrive — first to unpack!</div>
+      </div>
+
+      <div class="arrival-card">
+        <div class="arrival-names">Ryan &amp; Eleanor</div>
+        <div class="arrival-time">Arrive 1:50 PM</div>
+        <div class="arrival-note">Afternoon crew</div>
+      </div>
+
+      <div class="arrival-card">
+        <div class="arrival-names">Eric &amp; Jackie</div>
+        <div class="arrival-time">Arrive 1:50 PM</div>
+        <div class="arrival-note">Afternoon crew</div>
+      </div>
+
+      <div class="arrival-card">
+        <div class="arrival-names">Matt &amp; Breanna</div>
+        <div class="arrival-time">TBD</div>
+        <div class="arrival-note">Itinerary pending</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ HOUSE ══════════ -->
+<section id="house">
+  <div class="container">
+    <p class="section-label">🏡 Home Base</p>
+    <h2 class="section-title">Where We're Staying</h2>
+    <div class="house-card">
+      <div class="house-icon">🏔️</div>
+      <div>
+        <div class="house-address">2184 Ranchero Drive</div>
+        <div class="house-city">Monument, CO 80132</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ ACTIVITIES ══════════ -->
+<section id="activities">
+  <div class="container">
+    <p class="section-label">🗺 Explore</p>
+    <h2 class="section-title">Things To Do</h2>
+    <div class="activities-grid">
+
+      <!-- Garden of the Gods -->
+      <div class="activity-card featured">
+        <div class="activity-body">
+          <span class="activity-tag">🌄 Nature</span>
+          <div class="activity-name">Garden of the Gods</div>
+          <p class="activity-desc">Iconic red rock formations with stunning Pikes Peak views. One of Colorado's most photographed landscapes — and it won't cost a dime.</p>
+          <div class="activity-meta">
+            <span class="meta-pill price">Free entry</span>
+            <span class="meta-pill hours">5 AM – 9 PM</span>
+          </div>
+          <a href="https://gardenofgods.com/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Pikes Peak Cog Railway -->
+      <div class="activity-card adventure">
+        <div class="activity-body">
+          <span class="activity-tag">🚂 Adventure</span>
+          <div class="activity-name">Pikes Peak Cog Railway</div>
+          <p class="activity-desc">America's most famous mountain railway — ride to the 14,115-ft summit for sweeping Rocky Mountain views without breaking a sweat.</p>
+          <div class="activity-meta">
+            <span class="meta-pill price">~$65–$75 / person</span>
+            <span class="meta-pill hours">~8 AM – 2 PM</span>
+          </div>
+          <a href="https://www.cograilway.com/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Cave of the Winds -->
+      <div class="activity-card adventure">
+        <div class="activity-body">
+          <span class="activity-tag">🕳️ Adventure</span>
+          <div class="activity-name">Cave of the Winds Mountain Park</div>
+          <p class="activity-desc">Underground cave tours plus zip lines, via ferrata, and a terror-dactyl swing above Williams Canyon. Something for every thrill level.</p>
+          <div class="activity-meta">
+            <span class="meta-pill price">$25 Adventure Pass</span>
+            <span class="meta-pill price">+$20–$35 / extra activity</span>
+          </div>
+          <a href="https://caveofthewinds.com/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Broadmoor Seven Falls -->
+      <div class="activity-card nature">
+        <div class="activity-body">
+          <span class="activity-tag">💧 Waterfall</span>
+          <div class="activity-name">Broadmoor Seven Falls</div>
+          <p class="activity-desc">Nationally acclaimed waterfall tucked into a narrow granite canyon. A 1.5-mile round trip hike with additional trails for those wanting more.</p>
+          <div class="activity-meta">
+            <span class="meta-pill price">$20 adult · $15 kid</span>
+            <span class="meta-pill hours">9 AM – 7 PM</span>
+          </div>
+          <a href="https://www.sevenfalls.com/visit" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Cheyenne Mountain Zoo -->
+      <div class="activity-card nature">
+        <div class="activity-body">
+          <span class="activity-tag">🦒 Zoo</span>
+          <div class="activity-name">Cheyenne Mountain Zoo</div>
+          <p class="activity-desc">Perched on the side of Cheyenne Mountain — one of the highest zoos in America and repeatedly nominated as best zoo in the country.</p>
+          <div class="activity-meta">
+            <span class="meta-pill hours">9 AM – 5 PM</span>
+          </div>
+          <a href="https://www.cmzoo.org/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Colorado Wolf & Wildlife Center -->
+      <div class="activity-card nature">
+        <div class="activity-body">
+          <span class="activity-tag">🐺 Wildlife</span>
+          <div class="activity-name">Colorado Wolf &amp; Wildlife Center</div>
+          <p class="activity-desc">Get up close with wolves, coyotes, and foxes at this rescue and education center in Divide, about 30 minutes west of Colorado Springs.</p>
+          <div class="activity-meta">
+            <span class="meta-pill price">$20 adult · $15 kid</span>
+            <span class="meta-pill hours">9 AM – 5 PM</span>
+          </div>
+          <a href="https://www.wolfeducation.org/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Manitou Cliff Dwellings -->
+      <div class="activity-card culture">
+        <div class="activity-body">
+          <span class="activity-tag">🏺 Culture</span>
+          <div class="activity-name">Manitou Cliff Dwellings</div>
+          <p class="activity-desc">Walk through authentic Ancestral Puebloan cave dwellings. Also a gateway to the famous Manitou Incline trail for the adventurous.</p>
+          <div class="activity-meta">
+            <span class="meta-pill price">$12 adult · $8 kid</span>
+            <span class="meta-pill hours">9 AM – 5 PM</span>
+          </div>
+          <a href="https://www.cliffdwellingsmuseum.com/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- US Olympic Museum -->
+      <div class="activity-card culture">
+        <div class="activity-body">
+          <span class="activity-tag">🥇 Museum</span>
+          <div class="activity-name">U.S. Olympic &amp; Paralympic Museum</div>
+          <p class="activity-desc">World-class interactive museum celebrating America's Olympic legacy, located right in downtown Colorado Springs — the Olympic City USA.</p>
+          <div class="activity-meta">
+            <span class="meta-pill hours">Downtown Colorado Springs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Manitou Springs -->
+      <div class="activity-card culture">
+        <div class="activity-body">
+          <span class="activity-tag">🛍 Town</span>
+          <div class="activity-name">Downtown Manitou Springs</div>
+          <p class="activity-desc">A quirky, artsy mountain town with independent shops, galleries, and great restaurants just minutes from the Garden of the Gods.</p>
+          <div class="activity-meta">
+            <span class="meta-pill">Dining · Shopping · Strolling</span>
+          </div>
+          <a href="https://manitousprings.org/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Downtown CS -->
+      <div class="activity-card culture">
+        <div class="activity-body">
+          <span class="activity-tag">🏙 City</span>
+          <div class="activity-name">Downtown CS · Tejon St &amp; Acacia Park</div>
+          <p class="activity-desc">Colorado Springs' lively downtown strip with local breweries, farm-to-table restaurants, coffee shops, and Acacia Park for people-watching.</p>
+          <div class="activity-meta">
+            <span class="meta-pill">Tejon Street</span>
+            <span class="meta-pill">Acacia Park</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Royal Gorge -->
+      <div class="activity-card adventure">
+        <div class="activity-body">
+          <span class="activity-tag">🏔 Canyon</span>
+          <div class="activity-name">Royal Gorge — Gondola &amp; Zip Line</div>
+          <p class="activity-desc">Soar over one of Colorado's most dramatic canyons via gondola or zip line, 1,000 feet above the Arkansas River. Unforgettable views.</p>
+          <div class="activity-meta">
+            <span class="meta-pill">~1 hr from CS</span>
+          </div>
+          <a href="https://royalgorgeroute.com/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+      <!-- Whitewater Rafting -->
+      <div class="activity-card water">
+        <div class="activity-body">
+          <span class="activity-tag">🚣 Rafting</span>
+          <div class="activity-name">Whitewater Rafting</div>
+          <p class="activity-desc">Two options: Royal Gorge (closer, more expensive) or Buena Vista for a wider range of runs. Buena Vista is 1 hr 45 min from Colorado Springs.</p>
+          <div class="activity-meta">
+            <span class="meta-pill">Royal Gorge — ~1 hr</span>
+            <span class="meta-pill">Buena Vista — 1 hr 45 min</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Palmer Lake Kayaking -->
+      <div class="activity-card water">
+        <div class="activity-body">
+          <span class="activity-tag">🛶 Water</span>
+          <div class="activity-name">Palmer Lake Kayaking</div>
+          <p class="activity-desc">A peaceful mountain lake just north of Monument — perfect for kayaking, fishing, and scenic hikes around the shoreline.</p>
+          <div class="activity-meta">
+            <span class="meta-pill">Near Monument</span>
+          </div>
+          <a href="https://www.visitcos.com/blog/palmer-lake-recreation-area/" target="_blank" class="activity-link">Visit website</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ TIPS ══════════ -->
+<section id="tips">
+  <div class="container">
+    <p class="section-label">💡 Good to Know</p>
+    <h2 class="section-title">Quick Tips</h2>
+    <div class="tips-grid">
+
+      <div class="tip-card">
+        <div class="tip-icon">🌤</div>
+        <div class="tip-title">Weather in June</div>
+        <p class="tip-text">Expect sunny 70–80°F days and cooler nights around 45–55°F. Afternoon thunderstorms are common — bring layers and a light rain jacket.</p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🧴</div>
+        <div class="tip-title">Altitude Awareness</div>
+        <p class="tip-text">Colorado Springs sits at 6,000+ feet. Drink extra water, apply sunscreen generously, and take it easy the first day if you're coming from sea level.</p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🎟</div>
+        <div class="tip-title">Book Ahead</div>
+        <p class="tip-text">Pikes Peak Cog Railway and Cave of the Winds sell out fast in peak season. Reserve tickets online before the trip.</p>
+      </div>
+
+      <div class="tip-card">
+        <div class="tip-icon">🚗</div>
+        <div class="tip-title">Getting Around</div>
+        <p class="tip-text">Most attractions require a car. Monument is about 20 minutes north of downtown CS — build in drive time and coordinate carpools.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <strong>Busker Family Vacation</strong> &nbsp;·&nbsp; Colorado Springs, June 3–7, 2025
+</footer>
+
+<script>
+  // Shared activity likes powered by a Netlify Function + Netlify Blobs.
+  // The localStorage value only remembers which activities this browser has already liked.
+  const LIKED_STORAGE_KEY = 'buskerVacationLikedActivities';
+
+  const getLikedActivities = () => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem(LIKED_STORAGE_KEY) || '[]'));
+    } catch {
+      return new Set();
+    }
+  };
+
+  const saveLikedActivities = (liked) => {
+    localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify([...liked]));
+  };
+
+  const makeActivityId = (name) => name
+    .toLowerCase()
+    .replace(/&/g, 'and')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+  const setButtonState = (card, count, liked) => {
+    const button = card.querySelector('.like-button');
+    const countEl = card.querySelector('.like-count');
+    const countText = count === 1 ? '1 like' : `${count} likes`;
+
+    button.classList.toggle('liked', liked);
+    button.disabled = liked;
+    button.setAttribute('aria-pressed', liked ? 'true' : 'false');
+    button.innerHTML = liked ? '👍 Liked' : '👍 Like';
+    countEl.innerHTML = `<strong>${count}</strong> ${count === 1 ? 'like' : 'likes'}`;
+    countEl.setAttribute('aria-label', countText);
+  };
+
+  async function loadActivityLikes(cards) {
+    try {
+      const response = await fetch('/.netlify/functions/likes');
+      if (!response.ok) throw new Error('Could not load likes');
+      const data = await response.json();
+      const liked = getLikedActivities();
+
+      cards.forEach((card) => {
+        const id = card.dataset.activityId;
+        setButtonState(card, data.likes?.[id] || 0, liked.has(id));
+      });
+    } catch (error) {
+      console.warn('Likes are unavailable right now:', error);
+    }
+  }
+
+  function setupActivityLikes() {
+    const liked = getLikedActivities();
+    const cards = [...document.querySelectorAll('.activity-card')];
+
+    cards.forEach((card) => {
+      const name = card.querySelector('.activity-name')?.textContent.trim();
+      if (!name) return;
+
+      const id = makeActivityId(name);
+      card.dataset.activityId = id;
+      card.dataset.activityName = name;
+
+      const actions = document.createElement('div');
+      actions.className = 'activity-actions';
+      actions.innerHTML = `
+        <button class="like-button" type="button" aria-label="Like ${name}" aria-pressed="false">👍 Like</button>
+        <span class="like-count"><strong>0</strong> likes</span>
+      `;
+      card.querySelector('.activity-body').appendChild(actions);
+
+      setButtonState(card, 0, liked.has(id));
+
+      actions.querySelector('.like-button').addEventListener('click', async () => {
+        if (liked.has(id)) return;
+
+        const button = card.querySelector('.like-button');
+        const currentCount = Number(card.querySelector('.like-count strong').textContent) || 0;
+
+        button.disabled = true;
+
+        try {
+          const response = await fetch('/.netlify/functions/likes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id, name })
+          });
+
+          if (!response.ok) throw new Error('Could not save like');
+
+          const data = await response.json();
+          liked.add(id);
+          saveLikedActivities(liked);
+          setButtonState(card, data.count ?? currentCount + 1, true);
+        } catch (error) {
+          console.warn('Could not save like:', error);
+          button.disabled = false;
+          alert('Sorry, your like could not be saved. Please try again.');
+        }
+      });
+    });
+
+    loadActivityLikes(cards);
+  }
+
+  document.addEventListener('DOMContentLoaded', setupActivityLikes);
+</script>
+
+</body>
+</html>
