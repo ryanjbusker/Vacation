@@ -5,70 +5,60 @@ exports.handler = async (event) => {
 
   const store = getStore("activity-likes");
 
+  // GET all likes
+  if (event.httpMethod === "GET") {
+    const likes = (await store.get("likes", { type: "json" })) || {};
+
+    return {
+      statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(likes),
+    };
+  }
+
+  // POST new like
+  if (event.httpMethod === "POST") {
+    try {
+      const { activityId } = JSON.parse(event.body);
+
+      if (!activityId) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: "Missing activityId" }),
+        };
+      }
+
+      const likes =
+        (await store.get("likes", { type: "json" })) || {};
+
+      likes[activityId] = (likes[activityId] || 0) + 1;
+
+      await store.setJSON("likes", likes);
+
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          success: true,
+          likes: likes[activityId],
+        }),
+      };
+    } catch (err) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: err.message,
+        }),
+      };
+    }
+  }
+
   return {
-    statusCode: 200,
-    body: JSON.stringify({ ok: true, message: "Likes function is working" }),
+    statusCode: 405,
+    body: "Method Not Allowed",
   };
 };
-
-// const { getStore } = require('@netlify/blobs');
-
-// const headers = {
-//   'Content-Type': 'application/json',
-//   'Cache-Control': 'no-store'
-// };
-
-// exports.handler = async (event) => {
-//   const store = getStore('busker-vacation-likes');
-
-//   if (event.httpMethod === 'OPTIONS') {
-//     return { statusCode: 204, headers, body: '' };
-//   }
-
-//   try {
-//     const likes = (await store.get('activity-likes', { type: 'json' })) || {};
-
-//     if (event.httpMethod === 'GET') {
-//       return {
-//         statusCode: 200,
-//         headers,
-//         body: JSON.stringify({ likes })
-//       };
-//     }
-
-//     if (event.httpMethod === 'POST') {
-//       const body = JSON.parse(event.body || '{}');
-//       const id = String(body.id || '').trim();
-
-//       if (!id || !/^[a-z0-9-]{1,120}$/.test(id)) {
-//         return {
-//           statusCode: 400,
-//           headers,
-//           body: JSON.stringify({ error: 'A valid activity id is required.' })
-//         };
-//       }
-
-//       likes[id] = (Number(likes[id]) || 0) + 1;
-//       await store.setJSON('activity-likes', likes);
-
-//       return {
-//         statusCode: 200,
-//         headers,
-//         body: JSON.stringify({ id, count: likes[id], likes })
-//       };
-//     }
-
-//     return {
-//       statusCode: 405,
-//       headers,
-//       body: JSON.stringify({ error: 'Method not allowed.' })
-//     };
-//   } catch (error) {
-//     console.error(error);
-//     return {
-//       statusCode: 500,
-//       headers,
-//       body: JSON.stringify({ error: 'Unable to process likes right now.' })
-//     };
-//   }
-// };
