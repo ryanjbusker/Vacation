@@ -798,17 +798,13 @@
   function getLikedActivities() {
     try {
       return new Set(JSON.parse(localStorage.getItem(LIKED_STORAGE_KEY) || "[]"));
-    } catch {
+    } catch (error) {
       return new Set();
     }
   }
 
   function saveLikedActivities(liked) {
     localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify([...liked]));
-  }
-
-  function formatLikeText(count) {
-    return `${count} ${count === 1 ? "like" : "likes"}`;
   }
 
   function setButtonState(card, count, liked) {
@@ -820,25 +816,25 @@
     button.classList.toggle("liked", liked);
     button.disabled = liked;
     button.setAttribute("aria-pressed", liked ? "true" : "false");
-    button.textContent = liked ? "👍 Liked" : "👍 Like";
-
+    button.innerHTML = liked ? "👍 Liked" : "👍 Like";
     countEl.innerHTML = `<strong>${count}</strong> ${count === 1 ? "like" : "likes"}`;
-    countEl.setAttribute("aria-label", formatLikeText(count));
   }
 
   function ensureLikeControls(card) {
-    let actions = card.querySelector(".activity-actions");
+    const existingActions = card.querySelector(".activity-actions");
+    if (existingActions) return existingActions;
 
-    if (!actions) {
-      actions = document.createElement("div");
-      actions.className = "activity-actions";
-      actions.innerHTML = `
-        <button class="like-button" type="button" aria-pressed="false">👍 Like</button>
-        <span class="like-count"><strong>0</strong> likes</span>
-      `;
-      card.querySelector(".activity-body")?.appendChild(actions);
-    }
+    const body = card.querySelector(".activity-body");
+    if (!body) return null;
 
+    const actions = document.createElement("div");
+    actions.className = "activity-actions";
+    actions.innerHTML = `
+      <button class="like-button" type="button" aria-pressed="false">👍 Like</button>
+      <span class="like-count"><strong>0</strong> likes</span>
+    `;
+
+    body.appendChild(actions);
     return actions;
   }
 
@@ -856,8 +852,7 @@
         const count = Number(likes[id] || 0);
         setButtonState(card, count, liked.has(id));
       });
-    });
-  } catch (error) {
+    } catch (error) {
       console.warn("Likes are unavailable right now:", error);
     }
   }
@@ -869,18 +864,18 @@
     const countEl = card.querySelector(".like-count");
     const liked = getLikedActivities();
 
-    if (!id || liked.has(id)) return;
+    if (!id || !button || !countEl || liked.has(id)) return;
 
-    const currentCount = Number(countEl?.querySelector("strong")?.textContent || 0);
+    const currentCount = Number(countEl.querySelector("strong")?.textContent || 0);
     button.disabled = true;
 
     try {
       const response = await fetch(LIKES_ENDPOINT, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ id, name }),
+        body: JSON.stringify({ id, name })
       });
 
       if (!response.ok) throw new Error("Could not save like");
@@ -913,7 +908,9 @@
       setButtonState(card, 0, getLikedActivities().has(id));
 
       const button = card.querySelector(".like-button");
-      button.addEventListener("click", () => likeActivity(card));
+      if (button) {
+        button.addEventListener("click", () => likeActivity(card));
+      }
     });
 
     loadActivityLikes(cards);
