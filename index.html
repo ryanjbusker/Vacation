@@ -782,112 +782,78 @@
 </footer>
 
 <script>
-  // Shared activity likes powered by a Netlify Function + Netlify Blobs.
-  // The localStorage value only remembers which activities this browser has already liked.
-  const LIKED_STORAGE_KEY = 'buskerVacationLikedActivities';
+  const LIKES_ENDPOINT = "/.netlify/functions/likes";
+  const votedKey = (id) => `busker-voted-${id}`;
 
-  const getLikedActivities = () => {
+  async function loadLikes() {
+    const res = await fetch(LIKES_ENDPOINT);
+    const data = await res.json();
+    const likes = data.likes || data || {};
+
+    document.querySelectorAll(".activity-card").forEach((card) => {
+      const id = card.dataset.activityId;
+      if (!id) return;
+
+      const countEl = card.querySelector(".like-count");
+      const button = card.querySelector(".like-button");
+
+      const count = Number(likes[id] || 0);
+      countEl.textContent = `${count} ${count === 1 ? "like" : "likes"}`;
+
+      if (localStorage.getItem(votedKey(id))) {
+        button.classList.add("liked");
+        button.disabled = true;
+        button.innerHTML = "👍 Liked";
+      }
+    });
+  }
+
+  async function likeActivity(card) {
+    const id = card.dataset.activityId;
+    const button = card.querySelector(".like-button");
+    const countEl = card.querySelector(".like-count");
+
+    if (!id || localStorage.getItem(votedKey(id))) return;
+
+    button.disabled = true;
+
     try {
-      return new Set(JSON.parse(localStorage.getItem(LIKED_STORAGE_KEY) || '[]'));
-    } catch {
-      return new Set();
-    }
-  };
-
-  const saveLikedActivities = (liked) => {
-    localStorage.setItem(LIKED_STORAGE_KEY, JSON.stringify([...liked]));
-  };
-
-  const makeActivityId = (name) => name
-    .toLowerCase()
-    .replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-
-  const setButtonState = (card, count, liked) => {
-    const button = card.querySelector('.like-button');
-    const countEl = card.querySelector('.like-count');
-    const countText = count === 1 ? '1 like' : `${count} likes`;
-
-    button.classList.toggle('liked', liked);
-    button.disabled = liked;
-    button.setAttribute('aria-pressed', liked ? 'true' : 'false');
-    button.innerHTML = liked ? '👍 Liked' : '👍 Like';
-    countEl.innerHTML = `<strong>${count}</strong> ${count === 1 ? 'like' : 'likes'}`;
-    countEl.setAttribute('aria-label', countText);
-  };
-
-  async function loadActivityLikes(cards) {
-    try {
-      const response = await fetch('/.netlify/functions/likes');
-      if (!response.ok) throw new Error('Could not load likes');
-      const data = await response.json();
-      const liked = getLikedActivities();
-
-      cards.forEach((card) => {
-        const id = card.dataset.activityId;
-        setButtonState(card, data.likes?.[id] || 0, liked.has(id));
+      const res = await fetch(LIKES_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
       });
-    } catch (error) {
-      console.warn('Likes are unavailable right now:', error);
+
+      if (!res.ok) throw new Error("Like failed");
+
+      const data = await res.json();
+      const count = Number(data.count || 0);
+
+      localStorage.setItem(votedKey(id), "true");
+
+      button.classList.add("liked");
+      button.innerHTML = "👍 Liked";
+      countEl.textContent = `${count} ${count === 1 ? "like" : "likes"}`;
+    } catch (err) {
+      button.disabled = false;
+      alert("Sorry, your like could not be saved. Please try again.");
     }
   }
 
-  function setupActivityLikes() {
-    const liked = getLikedActivities();
-    const cards = [...document.querySelectorAll('.activity-card')];
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".activity-card").forEach((card) => {
+      const button = card.querySelector(".like-button");
+      if (!button) return;
 
-    cards.forEach((card) => {
-      const name = card.querySelector('.activity-name')?.textContent.trim();
-      if (!name) return;
-
-      const id = makeActivityId(name);
-      card.dataset.activityId = id;
-      card.dataset.activityName = name;
-
-      const actions = document.createElement('div');
-      actions.className = 'activity-actions';
-      actions.innerHTML = `
-        <button class="like-button" type="button" aria-label="Like ${name}" aria-pressed="false">👍 Like</button>
-        <span class="like-count"><strong>0</strong> likes</span>
-      `;
-      card.querySelector('.activity-body').appendChild(actions);
-
-      setButtonState(card, 0, liked.has(id));
-
-      actions.querySelector('.like-button').addEventListener('click', async () => {
-        if (liked.has(id)) return;
-
-        const button = card.querySelector('.like-button');
-        const currentCount = Number(card.querySelector('.like-count strong').textContent) || 0;
-
-        button.disabled = true;
-
-        try {
-          const response = await fetch('/.netlify/functions/likes', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, name })
-          });
-
-          if (!response.ok) throw new Error('Could not save like');
-
-          const data = await response.json();
-          liked.add(id);
-          saveLikedActivities(liked);
-          setButtonState(card, data.count ?? currentCount + 1, true);
-        } catch (error) {
-          console.warn('Could not save like:', error);
-          button.disabled = false;
-          alert('Sorry, your like could not be saved. Please try again.');
-        }
+      button.addEventListener("click", () => {
+        likeActivity(card);
       });
     });
 
-    loadActivityLikes(cards);
-  }
-
-  document.addEventListener('DOMContentLoaded', setupActivityLikes);
+    loadLikes();
+  });
 </script>
 
 </body>
